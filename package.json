@@ -1,0 +1,26 @@
+{
+  "name": "quizdini-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": "10.14.1",
+    "npm": "6.4.1"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/babalugats76/quizdini-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/babalugats76/quizdini-api/issues"
+  },
+  "homepage": "https://github.com/babalugats76/quizdini-api#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
