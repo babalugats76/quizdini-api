@@ -3,11 +3,34 @@ const cors = require('cors');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const app = express();
+const keys = require('./config/keys');
 
 app.use(cors());
 
+/* Use this redirect in lieu of the wildcard: http://localhost:5000/auth/google/callback */
+
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: keys.googleClientID,
+      clientSecret: keys.googleClientSecret,
+      callbackURL: '/auth/google/callback'
+    },
+    accessToken => {
+      console.log(accessToken);
+    }
+  )
+);
+
+app.get(
+  '/auth/google',
+  passport.authenticate('google', {
+    scope: ['profile', 'email']
+  })
+);
+
 app.get('/match/4', (req, res) => {
-  console.log('received request...', req);
+  //console.log('received request...', req);
   res.json({
     title: 'Basic Computer Science Vocabulary',
     topic: 'Programming',
@@ -20,12 +43,6 @@ app.get('/match/4', (req, res) => {
     matches: ''
   });
 });
-
-/* Use this redirect in lieu of the wildcard: http://localhost:5000/auth/google/callback */
-
-// ClientID: 624001032721-0eeueit2htuk4fecq8h1vcvto2v573rd.apps.googleusercontent.com
-// Client Secret: dxMcCjysrX46A79cLnkV_slq
-//passport.use(new GoogleStrategy({}));
 
 const PORT = process.env.port || 5000;
 app.listen(PORT);
