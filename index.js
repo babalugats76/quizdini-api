@@ -1,11 +1,14 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const app = express();
 const keys = require('./config/keys');
 
+const app = express();
+
 app.use(cors());
+app.use(bodyParser.json({limit: '50mb'}))
 
 /* Use this redirect in lieu of the wildcard: http://localhost:5000/auth/google/callback */
 
@@ -42,6 +45,12 @@ app.get('/match/4', (req, res) => {
     },
     matches: ''
   });
+});
+
+app.post('/match', (req, res) => {
+  console.log('Requesting to create a new record!');
+  console.log(req.body);
+  res.json(req.body);
 });
 
 const PORT = process.env.port || 5000;
