@@ -12,6 +12,9 @@ app.use(bodyParser.json({limit: '50mb'}))
 
 /* Use this redirect in lieu of the wildcard: http://localhost:5000/auth/google/callback */
 
+/**
+ * Configure OAuth Passport strategy
+ */
 passport.use(
   new GoogleStrategy(
     {
@@ -19,17 +22,33 @@ passport.use(
       clientSecret: keys.googleClientSecret,
       callbackURL: '/auth/google/callback'
     },
-    accessToken => {
-      console.log(accessToken);
+    (accessToken, refreshToken, profile, done) => {
+      console.log('access token:', accessToken);
+      console.log('refresh token:', refreshToken);
+      console.log('profile:', profile);
     }
   )
 );
 
+/**
+ * Contact Google have them prompt 
+ * the user for permission / authentication
+ * If given, a request will be sent to `callbackURL'
+ * with metadata needed to make handshake which
+ * will culminate in Google sending user's profile info
+ */
 app.get(
   '/auth/google',
   passport.authenticate('google', {
     scope: ['profile', 'email']
   })
+);
+
+/**
+ * Implement route for `callbackURL`
+ */
+app.get('/auth/google/callback', 
+  passport.authenticate('google')
 );
 
 app.get('/match/4', (req, res) => {
