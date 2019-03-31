@@ -4,7 +4,9 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const keys = require("./config/keys");
 
+require("./models/User");       // Load before passport, etc.
 require("./services/passport"); // Since nothing is being exported
+
 
 mongoose.connect(keys.mongoURI, { useNewUrlParser: true });
 const app = express();
